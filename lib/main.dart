@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color.fromRGBO(22, 22, 33, 1),
         useMaterial3: true,
       ),
-      home: const SplashScreen(),
+      home: const RegisterScreen(),
     );
   }
 }

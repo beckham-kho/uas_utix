@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:uas_utix/screens/home_screen.dart';
+import 'package:uas_utix/screens/register_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -126,6 +127,33 @@ class LoginScreen extends StatelessWidget {
                             fontSize: 20,
                           ),
                         ),
+                      ),
+                      const SizedBox(height: 30,),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'Didn\'t have an account? ',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.white
+                            ),
+                          ),
+                          InkWell(
+                            child: const Text(
+                              'Register here',
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: Color.fromRGBO(247, 67, 70, 1),
+                              ),
+                            ),
+                            onTap: () {
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(builder: (context) => const RegisterScreen())
+                              );
+                            },
+                          ),
+                        ],
                       ),
                     ],
                   ),
