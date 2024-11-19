@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uas_utix/screens/login_screen.dart';
 import 'package:uas_utix/screens/splash_screen.dart';
 
 void main() {
@@ -15,10 +16,10 @@ class MyApp extends StatelessWidget {
       title: 'UTix',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.redAccent),
+        scaffoldBackgroundColor: const Color.fromRGBO(22, 22, 33, 1),
         useMaterial3: true,
       ),
-      home: const SplashScreen(),
+      home: const LoginScreen(),
     );
   }
 }
