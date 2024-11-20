@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:uas_utix/screens/home_screen.dart';
-import 'package:uas_utix/screens/login_screen.dart';
-import 'package:uas_utix/screens/register_screen.dart';
+import 'package:uas_utix/screens/navigation.dart';
 import 'package:uas_utix/screens/splash_screen.dart';
 
 void main() {
@@ -21,7 +19,7 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color.fromRGBO(22, 22, 33, 1),
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
+      home: const Navigation(0),
     );
   }
 }

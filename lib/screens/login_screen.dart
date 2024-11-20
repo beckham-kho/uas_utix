@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:uas_utix/screens/home_screen.dart';
+import 'package:uas_utix/screens/navigation.dart';
 import 'package:uas_utix/screens/register_screen.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -115,7 +115,7 @@ class LoginScreen extends StatelessWidget {
                       FilledButton(
                         onPressed: () {
                           Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (context) => const HomeScreen())
+                            MaterialPageRoute(builder: (context) => const Navigation(0))
                           );
                         },
                         style: ButtonStyle(
