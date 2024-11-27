@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:uas_utix/api/api.dart';
+import 'package:uas_utix/api_constants.dart';
+import 'package:uas_utix/models/movie_genre.dart';
+import 'package:uas_utix/models/movies_model.dart';
+import 'package:uas_utix/screens/movie_detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -29,6 +35,14 @@ class _HomeScreenState extends State<HomeScreen> {
   //     _foundProduct = results;
   //   });
   // }
+
+  late Future<List<MovieModel>> nowPlayingMovies;
+
+  @override
+  void initState() {
+    super.initState();
+    nowPlayingMovies = Api().getNowPlayingMovies();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +91,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Colors.white,
                       ),
                       Text(
-                        'Jakarta',
+                        'Paskal 23 - CGV - Bandung',
                         style: TextStyle(
                           fontSize: 20.0,
                           color: Colors.white,
@@ -86,100 +100,130 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                 ),
-                const SizedBox(height: 20,),
+                const SizedBox(height: 5,),
                 Row(
                   children: <Widget>[
-                    InkWell(
-                      onTap: () {},
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      focusColor: Colors.transparent,
-                      hoverColor: Colors.transparent,
-                      child: Image.asset('img/logo_utix.png', width: 75,),
+                    Column(
+                      children: [
+                        InkWell(
+                          onTap: () {
+
+                          },
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          focusColor: Colors.transparent,
+                          hoverColor: Colors.transparent,
+                          child: Image.asset('img/menu_movies.png', width: 75,),
+                        ),
+                        const Text(
+                          'Movies',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.white
+                          ),
+                        )
+                      ],
                     ),
                     const SizedBox(width: 20,),
-                    InkWell(
-                      onTap: () {},
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      focusColor: Colors.transparent,
-                      hoverColor: Colors.transparent,
-                      child: Image.asset('img/logo_utix.png', width: 75,),
+                    Column(
+                      children: [
+                        InkWell(
+                          onTap: () {},
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          focusColor: Colors.transparent,
+                          hoverColor: Colors.transparent,
+                          child: Image.asset('img/menu_fnb.png', width: 75,),
+                        ),
+                        const Text(
+                          'FnB',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.white
+                          ),
+                        )
+                      ],
                     ),
                     const SizedBox(width: 20,),
-                    InkWell(
-                      onTap: () {},
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      focusColor: Colors.transparent,
-                      hoverColor: Colors.transparent,
-                      child: Image.asset('img/logo_utix.png', width: 75,),
-                    ),
-                    const SizedBox(width: 20,),
-                    InkWell(
-                      onTap: () {},
-                      splashColor: Colors.transparent,
-                      highlightColor: Colors.transparent,
-                      focusColor: Colors.transparent,
-                      hoverColor: Colors.transparent,
-                      child: Image.asset('img/logo_utix.png', width: 75,),
+                    Column(
+                      children: [
+                        InkWell (
+                          onTap: () {},
+                          splashColor: Colors.transparent,
+                          highlightColor: Colors.transparent,
+                          focusColor: Colors.transparent,
+                          hoverColor: Colors.transparent,
+                          child: Image.asset('img/menu_promo.png', width: 75,),
+                        ),
+                        const Text(
+                          'Promo',
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.white
+                          ),
+                        )
+                      ],
                     ),
                   ],
                 ),
                 const SizedBox(height: 20,),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    const Text(
-                      'Now Playing',
-                      style: TextStyle(
-                        fontSize: 25.0,
-                        color: Colors.white
-                      ),
-                    ),
-                    InkWell(
-                      child: const Text(
-                        'See More',
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: Color.fromRGBO(247, 67, 70, 1),
-                        ),
-                      ),
-                      onTap: () {},
-                    ),
-                  ],
+                const Text(
+                  'Now Playing',
+                  style: TextStyle(
+                    fontSize: 25.0,
+                    color: Colors.white
+                  ),
                 ),
                 const SizedBox(height: 20,),
                 SizedBox(
-                  height: 200,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width/3-20,
-                            color: const Color.fromRGBO(43, 43, 56, 1),
-                            child: const Padding(
-                              padding: EdgeInsets.all(10.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: <Widget>[
-                                  //diisi poster film
-                                  Text('Poster Film'),
-                                ],
+                  child: FutureBuilder(
+                    future: nowPlayingMovies,
+                    builder: (context, snapshot) {
+                      if(snapshot.hasError) {
+                        return Center(child: Text(snapshot.error.toString()));
+                      } else if(snapshot.hasData) {
+                        return CarouselSlider.builder(
+                          itemCount: 10,
+                          itemBuilder: (context, itemIndex, pageViewIndex) {
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: SizedBox(
+                                width: 200,
+                                child: InkWell(
+                                  onTap: () {
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(builder: (context) => MovieDetailScreen(snapshot.data![itemIndex]))
+                                    );
+                                  },
+                                  splashColor: Colors.transparent,
+                                  highlightColor: Colors.transparent,
+                                  focusColor: Colors.transparent,
+                                  hoverColor: Colors.transparent,
+                                  child: Image.network(
+                                    filterQuality: FilterQuality.high,
+                                    fit: BoxFit.cover,
+                                    '${ApiConstants.imagePath}${snapshot.data![itemIndex].posterPath}',
+                                  ),
+                                )
                               ),
-                            ),
+                            );
+                          },
+                          options: CarouselOptions(
+                            height: 300,
+                            autoPlay: true,
+                            viewportFraction: 0.55,
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            enlargeCenterPage: true,
+                            pauseAutoPlayOnManualNavigate: true,
+                            pageSnapping: true,
+                            autoPlayAnimationDuration: const Duration(seconds: 2)
                           ),
-                        )
-                      );
-                    },
-                    itemCount: 10,
-                  ),
+                        );
+                      } else {
+                        return const Center(child: RefreshProgressIndicator());
+                      }
+                    }
+                  )
                 ),
                 const SizedBox(height: 20,),
                 const Center(
@@ -202,34 +246,24 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ),
                 const SizedBox(height: 10,),
-                SizedBox(
-                  height: 200,
-                  child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.all(5),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: Container(
-                            width: MediaQuery.of(context).size.width-40,
-                            color: const Color.fromRGBO(43, 43, 56, 1),
-                            child: const Padding(
-                              padding: EdgeInsets.all(10.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: <Widget>[
-                                  //diisi gambar iklan
-                                  Text('Gambar Iklan'),
-                                ],
-                              ),
-                            ),
-                          ),
-                        )
-                      );
-                    },
-                    itemCount: 3,
+                CarouselSlider.builder(
+                  itemCount: 3, 
+                  itemBuilder: (context, itemIndex, pageViewIndex) {
+                    return Padding(
+                      padding: const EdgeInsets.all(5),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Container(
+                          width: MediaQuery.of(context).size.width,
+                          color: const Color.fromRGBO(43, 43, 56, 1),
+                        ),
+                      ),
+                    );
+                  },
+                  options: CarouselOptions(
+                    height: 150,
+                    viewportFraction: 0.8,
+                    pageSnapping: true,
                   ),
                 ),
               ],

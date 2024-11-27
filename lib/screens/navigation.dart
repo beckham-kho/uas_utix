@@ -45,7 +45,7 @@ class _NavigationState extends State<Navigation> {
             icon: Icon(Icons.home),
           ),
           BottomNavigationBarItem(
-            label: 'Food n Drink',
+            label: 'Food n Beverage',
             icon: Icon(Icons.fastfood_rounded),
           ),
           BottomNavigationBarItem(
