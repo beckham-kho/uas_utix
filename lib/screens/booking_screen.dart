@@ -10,8 +10,6 @@ class BookingScreen extends StatefulWidget {
 }
 
 class _BookingScreenState extends State<BookingScreen> {
-  Widget _seat() {
-
     var seatStatus = [
       [1, 1, 1, 0, 1, 1, 1],
       [1, 1, 1, 0, 1, 1, 1],  
@@ -20,7 +18,7 @@ class _BookingScreenState extends State<BookingScreen> {
       [1, 1, 1, 0, 1, 1, 1],  
       [1, 1, 1, 0, 1, 1, 1],
     ];
-
+  Widget _seat() {
     return Column(
       children: [
         for(int i=0; i<6; i++) 
@@ -382,6 +380,7 @@ class _BookingScreenState extends State<BookingScreen> {
     );
   }
 }
+
 
 
 
