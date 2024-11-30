@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uas_utix/api_constants.dart';
 import 'package:uas_utix/models/movies_model.dart';
+import 'package:uas_utix/screens/booking_screen.dart';
 
 class MovieDetailScreen extends StatefulWidget {
   final MovieModel apiData;
@@ -20,10 +21,29 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            Image.network(
-              filterQuality: FilterQuality.high,
-              fit: BoxFit.cover,
-              '${ApiConstants.imagePath}${widget.apiData.backdropPath}',
+            Stack(
+              children: <Widget>[
+                Image.network(
+                  filterQuality: FilterQuality.high,
+                  fit: BoxFit.cover,
+                  '${ApiConstants.imagePath}${widget.apiData.backdropPath}',
+                ),
+                SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 15, top: 5),
+                    child: CircleAvatar(
+                      backgroundColor: Colors.grey,
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_back),
+                        color: const Color.fromRGBO(204, 204, 204, 1),
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
             const SizedBox(height: 20,),
             Padding(
@@ -166,7 +186,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                     ),
                                   ),
                                   Text(
-                                    'Rp. 45.000',
+                                    'Rp. 40.000',
                                     style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w500,
@@ -182,7 +202,11 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                 children: [
                                   Expanded(
                                     child: TextButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(builder: (context) => const BookingScreen())
+                                        );
+                                      },
                                       style: TextButton.styleFrom(
                                         backgroundColor: const Color.fromRGBO(247, 67, 70, 1),
                                       ),
@@ -197,79 +221,11 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                                   const SizedBox(width: 10),
                                   Expanded(
                                     child: TextButton(
-                                      onPressed: () {},
-                                      style: TextButton.styleFrom(
-                                        backgroundColor: const Color.fromRGBO(247, 67, 70, 1),
-                                      ),
-                                      child: const Text(
-                                        '10.00',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      )
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    child: TextButton(
-                                      onPressed: () {},
-                                      style: TextButton.styleFrom(
-                                        backgroundColor: const Color.fromRGBO(247, 67, 70, 1),
-                                      ),
-                                      child: const Text(
-                                        '10.00',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      )
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Expanded(
-                                    child: TextButton(
-                                      onPressed: () {},
-                                      style: TextButton.styleFrom(
-                                        backgroundColor: const Color.fromRGBO(247, 67, 70, 1),
-                                      ),
-                                      child: const Text(
-                                        '10.00',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      )
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    child: TextButton(
-                                      onPressed: () {},
-                                      style: TextButton.styleFrom(
-                                        backgroundColor: const Color.fromRGBO(247, 67, 70, 1),
-                                      ),
-                                      child: const Text(
-                                        '10.00',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      )
-                                    ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Expanded(
-                                    child: TextButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        Navigator.of(context).push(
+                                          MaterialPageRoute(builder: (context) => const BookingScreen())
+                                        );
+                                      },
                                       style: TextButton.styleFrom(
                                         backgroundColor: const Color.fromRGBO(247, 67, 70, 1),
                                       ),
