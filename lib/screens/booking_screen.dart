@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:uas_utix/screens/ticket_payment_screen.dart';
 import 'package:uas_utix/widgets/seat_selector.dart';
 
 class BookingScreen extends StatefulWidget {
@@ -360,7 +361,11 @@ class _BookingScreenState extends State<BookingScreen> {
             width: MediaQuery.of(context).size.width,
             color: const Color.fromRGBO(247, 67, 70, 1),
             child: TextButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const TicketPaymentScreen())
+                );
+              },
               child: const Text(
                 'PICK SEAT',
                 textAlign: TextAlign.center,
