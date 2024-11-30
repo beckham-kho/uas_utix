@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:uas_utix/screens/home_screen.dart';
 import 'package:uas_utix/screens/login_screen.dart';
+import 'package:uas_utix/screens/ticket_screen.dart';
 
 class PaymentSplashScreen extends StatefulWidget {
   const PaymentSplashScreen({super.key});
@@ -16,9 +17,9 @@ class _PaymentSplashScreenState extends State<PaymentSplashScreen> with SingleTi
     super.initState();
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     Future.delayed(const Duration(seconds: 5), () {
-      // Navigator.of(context).pushReplacement(
-      //   MaterialPageRoute(builder: (_) => const TicketScreen())
-      // );
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const TicketScreen())
+      );
     });
   }
 
