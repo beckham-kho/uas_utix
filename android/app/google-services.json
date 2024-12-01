@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "623529994524",
+    "project_id": "uas-ppb-utix",
+    "storage_bucket": "uas-ppb-utix.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:623529994524:android:4417697410e02d54ae72d9",
+        "android_client_info": {
+          "package_name": "com.example.uas_utix"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB_unFWv1ObM1Ef2NwfyyuvCWE1eesnCv0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
