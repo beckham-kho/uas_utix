@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:uas_utix/screens/home_screen.dart';
 import 'package:uas_utix/screens/login_screen.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -16,7 +18,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     Future.delayed(const Duration(seconds: 5), () {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const LoginScreen())
+        MaterialPageRoute(builder: (_) => const AuthGuard())
       );
     });
   }
@@ -53,6 +55,24 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
           ],
         )
       ),
+    );
+  }
+}
+
+class AuthGuard extends StatelessWidget {
+  const AuthGuard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<User?>(
+      stream: FirebaseAuth.instance.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return const HomeScreen();
+        } else {
+          return const LoginScreen();
+        }
+      },
     );
   }
 }

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:provider/provider.dart';
 import 'package:uas_utix/api/api.dart';
 import 'package:uas_utix/api_constants.dart';
 import 'package:uas_utix/models/movie_genre.dart';
 import 'package:uas_utix/models/movies_model.dart';
+import 'package:uas_utix/providers/auth_provider.dart';
 import 'package:uas_utix/screens/movie_detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -13,29 +15,6 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
   }
 class _HomeScreenState extends State<HomeScreen> {
-  //nanti pas mau pakai search harus pake onChange
-  // final List<Product> _productList = productList;
-  // List<Product> _foundProduct = [];
-  
-  // @override
-  // void initState() {
-  //   _foundProduct = _productList;
-  //   super.initState();
-  // }
-
-  // void _runFilter(String enteredKeyword) {
-  //   List<Product> results = [];
-  //   if(enteredKeyword.isEmpty) {
-  //     results = _productList;
-  //   } else {
-  //     results = _productList.where((product) => product.title.toLowerCase().contains(enteredKeyword.toLowerCase())).toList();
-  //   }
-
-  //   setState(() {
-  //     _foundProduct = results;
-  //   });
-  // }
-
   late Future<List<MovieModel>> nowPlayingMovies;
 
   @override
@@ -52,14 +31,6 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: const Color.fromRGBO(43, 43, 56, 1),
         title: Image.asset('img/logo_utix.png', width: 75),
         actions: <Widget>[
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(
-              Icons.search_rounded,
-              color: Colors.white,
-              size: 35,
-            ),
-          ),
           IconButton(
             onPressed: () {},
             icon: const Icon(

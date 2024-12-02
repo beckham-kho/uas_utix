@@ -1,18 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:uas_utix/screens/home_screen.dart';
 import 'package:uas_utix/screens/login_screen.dart';
-import 'package:uas_utix/screens/navigation.dart';
+import 'package:uas_utix/services/register_service.dart';
 
-class RegisterScreen extends StatelessWidget {
+class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final formKey = GlobalKey<FormState>();
 
-    TextEditingController emailController =  TextEditingController();
-    TextEditingController nameController =  TextEditingController();
-    TextEditingController passwordController =  TextEditingController();
-    TextEditingController passwordConfirmController =  TextEditingController();
+    final emailController =  TextEditingController();
+    final nameController =  TextEditingController();
+    final passwordController =  TextEditingController();
+    final passwordConfirmController =  TextEditingController();
 
     return Scaffold(
       body: Center(
@@ -124,6 +131,7 @@ class RegisterScreen extends StatelessWidget {
                       ),
                       TextFormField(
                         controller: passwordController,
+                        obscureText: true,
                         style: const TextStyle(color: Colors.white),
                         decoration: const InputDecoration(
                           focusedBorder: OutlineInputBorder(
@@ -160,6 +168,7 @@ class RegisterScreen extends StatelessWidget {
                       ),
                       TextFormField(
                         controller: passwordConfirmController,
+                        obscureText: true,
                         style: const TextStyle(color: Colors.white),
                         decoration: const InputDecoration(
                           focusedBorder: OutlineInputBorder(
@@ -185,12 +194,27 @@ class RegisterScreen extends StatelessWidget {
                           return null;
                         },
                       ),
-                      const SizedBox(height: 30,),
+                      const SizedBox(height: 30),
                       FilledButton(
-                        onPressed: () {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(builder: (context) => const Navigation(0))
-                          );
+                        onPressed: () async {
+                          if(passwordController.text == passwordConfirmController.text) {
+                            await RegisterService().register(
+                              email: emailController.text, 
+                              password: passwordController.text
+                            );
+                            
+                            Navigator.of(context).pushReplacement(
+                              MaterialPageRoute(builder: (context) => const HomeScreen())
+                            );
+                          } else {
+                            Fluttertoast.showToast(
+                              msg: 'Please reenter your password!',
+                              toastLength: Toast.LENGTH_LONG,
+                              gravity: ToastGravity.SNACKBAR,
+                              textColor: Colors.white,
+                              fontSize: 16,
+                            );
+                          }
                         },
                         style: ButtonStyle(
                           backgroundColor: WidgetStateProperty.all<Color>(const Color.fromRGBO(247, 67, 70, 1),),
