@@ -1,15 +1,54 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
+import 'package:uas_utix/api_constants.dart';
+import 'package:uas_utix/providers/auth_provider.dart';
 import 'package:uas_utix/screens/payment_splash_screen.dart';
+import 'package:uas_utix/services/firestore_service.dart';
 
 class TicketPaymentScreen extends StatefulWidget {
-  const TicketPaymentScreen({super.key});
+  final String title;
+  final String poster;
+  final DateTime selectedDate;
+  final String selectedCinemaName;
+  final String selectedHour;
+  final int selectedPrice;
+  final List<String> selectedSeats;
+  final int totalPrice;
+  const TicketPaymentScreen(this.title, this.poster, this.selectedDate,this.selectedCinemaName,this.selectedHour, this.selectedPrice, this.selectedSeats, this.totalPrice, {super.key});
 
   @override
   State<TicketPaymentScreen> createState() => _TicketPaymentScreenState();
 }
 
 class _TicketPaymentScreenState extends State<TicketPaymentScreen> {
-  List<bool> isSelected = [true, false, false, false];
+  final FirestoreService firestoreService = FirestoreService();
+  dynamic _title;
+  dynamic _poster;
+  dynamic _date;
+  dynamic _cinemaPlace;
+  dynamic _hour;
+  dynamic _price;
+  dynamic _seats;
+  dynamic _totalPrice;
+  int adminFee = 2000;
+  int totalPayment = 0;
+  List<String> paymentMethod = ['QRIS', 'Transfer Bank', 'Dana', 'Gopay', 'OVO'];
+  List<bool> isSelected = [true, false, false, false, false];
+  String selectedPaymentMethod = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _title = widget.title;
+    _poster = widget.poster;
+    _date = widget.selectedDate;
+    _cinemaPlace = widget.selectedCinemaName;
+    _hour = widget.selectedHour;
+    _price = widget.selectedPrice;
+    _seats = widget.selectedSeats;
+    _totalPrice = widget.totalPrice;
+    totalPayment = _totalPrice + adminFee;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,33 +82,38 @@ class _TicketPaymentScreenState extends State<TicketPaymentScreen> {
                         width: 100,
                         height: 150,
                         color: const Color.fromRGBO(43, 43, 56, 1),
+                        child: Image.network(
+                          filterQuality: FilterQuality.high,
+                          fit: BoxFit.cover,
+                          '${ApiConstants.imagePath}$_poster',
+                        ),
                       ),
                     ),
                     const SizedBox(width: 10),
-                    const Flexible(
+                    Flexible(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Judul Film ssssssssssssssssssss',
-                            style: TextStyle(
+                            _title,
+                            style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),
                           ),
-                          SizedBox(height: 10),
+                          const SizedBox(height: 10),
                           Row(
                             children: [
                               Text(
-                                'Paskal 23 CGV',
-                                style: TextStyle(
+                                _cinemaPlace,
+                                style: const  TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
                                 ),
                               ),
-                              Text(
+                              const Text(
                                 ' - ',
                                 style: TextStyle(
                                   fontSize: 20,
@@ -77,7 +121,7 @@ class _TicketPaymentScreenState extends State<TicketPaymentScreen> {
                                   color: Colors.white,
                                 ),
                               ),
-                              Text(
+                              const Text(
                                 'Bandung',
                                 style: TextStyle(
                                   fontSize: 20,
@@ -87,18 +131,18 @@ class _TicketPaymentScreenState extends State<TicketPaymentScreen> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 2),
+                          const SizedBox(height: 2),
                           Row(
                             children: [
                               Text(
-                                '25 Nov 2024',
-                                style: TextStyle(
+                                DateFormat('MMMM dd, yyyy').format(_date),
+                                style: const TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
                                 ),
                               ),
-                              Text(
+                              const Text(
                                 ' | ',
                                 style: TextStyle(
                                   fontSize: 15,
@@ -107,8 +151,8 @@ class _TicketPaymentScreenState extends State<TicketPaymentScreen> {
                                 ),
                               ),
                               Text(
-                                '10.00',
-                                style: TextStyle(
+                                _hour,
+                                style: const  TextStyle(
                                   fontSize: 15,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,
@@ -116,9 +160,10 @@ class _TicketPaymentScreenState extends State<TicketPaymentScreen> {
                               ),
                             ],
                           ),
+                          const SizedBox(height: 10),
                           Text(
-                            'Seat: A1, A2, A3',
-                            style: TextStyle(
+                            _seats.join(', '),
+                            style: const  TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -140,14 +185,14 @@ class _TicketPaymentScreenState extends State<TicketPaymentScreen> {
                       ),
                     ),
                   ),
-                  child: const Column(
+                  child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             'Ticket Price',
                             style: TextStyle(
                               fontSize: 15,
@@ -156,8 +201,8 @@ class _TicketPaymentScreenState extends State<TicketPaymentScreen> {
                             ),
                           ),
                           Text(
-                            '1 x Rp. 40.000',
-                            style: TextStyle(
+                            _price.toString(),
+                            style: const  TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -165,11 +210,11 @@ class _TicketPaymentScreenState extends State<TicketPaymentScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             'Admin Fee',
                             style: TextStyle(
                               fontSize: 15,
@@ -178,8 +223,8 @@ class _TicketPaymentScreenState extends State<TicketPaymentScreen> {
                             ),
                           ),
                           Text(
-                            'Rp. 2000',
-                            style: TextStyle(
+                            adminFee.toString(),
+                            style: const  TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -187,11 +232,11 @@ class _TicketPaymentScreenState extends State<TicketPaymentScreen> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
+                          const Text(
                             'Total Payment',
                             style: TextStyle(
                               fontSize: 20,
@@ -200,8 +245,8 @@ class _TicketPaymentScreenState extends State<TicketPaymentScreen> {
                             ),
                           ),
                           Text(
-                            'Rp. 40.000',
-                            style: TextStyle(
+                            totalPayment.toString(),
+                            style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -223,7 +268,7 @@ class _TicketPaymentScreenState extends State<TicketPaymentScreen> {
                 ),
                 const SizedBox(height: 20),
                 Container(
-                  height: 200,
+                  height: 300,
                   decoration: const BoxDecoration(
                     border: Border.symmetric(
                       horizontal: BorderSide(
@@ -244,26 +289,16 @@ class _TicketPaymentScreenState extends State<TicketPaymentScreen> {
                           fillColor: const Color.fromRGBO(247, 67, 70, 1),
                           splashColor: const Color.fromRGBO(247, 67, 70, 1),
                           isSelected: isSelected,
-                          children: const [
-                            Padding(
-                              padding: EdgeInsets.all(8),
-                              child: Text('QRIS'),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(8),
-                              child: Text('Dana'),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(8),
-                              child: Text('Gopay'),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(8),
-                              child: Text('Transfer Bank'),
-                            ),
-                          ],
+                          children: 
+                            List.generate(paymentMethod.length, (int i) {
+                              return Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: Text(paymentMethod[i]),
+                              );
+                            }),
                           onPressed: (int newIndex) {
                             setState(() {
+                              selectedPaymentMethod = paymentMethod[newIndex];
                               for (int i=0; i<isSelected.length; i++) {
                                 if(i == newIndex) {
                                   isSelected[i] = true;
@@ -287,8 +322,19 @@ class _TicketPaymentScreenState extends State<TicketPaymentScreen> {
             color: const Color.fromRGBO(247, 67, 70, 1),
             child: TextButton(
               onPressed: () {
+                firestoreService.addTicketTransaction(
+                  _cinemaPlace,
+                  _title,
+                  _date.toString(),
+                  _price.toString(),
+                  _hour,
+                  FirestoreService().getCurrentUserEmail() ?? "user@gmail.com",
+                  totalPayment,
+                  selectedPaymentMethod
+                );
+
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const PaymentSplashScreen())
+                  MaterialPageRoute(builder: (context) => PaymentSplashScreen(_title, _poster, _date, _cinemaPlace, _hour, _price, _seats))
                 );
               },
               child: const Text(
@@ -307,3 +353,4 @@ class _TicketPaymentScreenState extends State<TicketPaymentScreen> {
     );
   }
 }
+

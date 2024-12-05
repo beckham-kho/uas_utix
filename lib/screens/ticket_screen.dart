@@ -1,14 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_barcodes/barcodes.dart';
+import 'package:uas_utix/api_constants.dart';
 
 class TicketScreen extends StatefulWidget {
-  const TicketScreen({super.key});
+  final String title;
+  final String poster;
+  final DateTime selectedDate;
+  final String selectedCinemaName;
+  final String selectedHour;
+  final int selectedPrice;
+  final List<String> selectedSeats;
+  const TicketScreen(this.title, this.poster, this.selectedDate,this.selectedCinemaName,this.selectedHour, this.selectedPrice, this.selectedSeats, {super.key});
 
   @override
   State<TicketScreen> createState() => _TicketScreenState();
 }
 
 class _TicketScreenState extends State<TicketScreen> {
+  dynamic _title;
+  dynamic _poster;
+  dynamic _date;
+  dynamic _cinemaPlace;
+  dynamic _hour;
+  dynamic _price;
+  dynamic _seats;
+
+    @override
+  void initState() {
+    super.initState();
+    _title = widget.title;
+    _poster = widget.poster;
+    _date = widget.selectedDate;
+    _cinemaPlace = widget.selectedCinemaName;
+    _hour = widget.selectedHour;
+    _price = widget.selectedPrice;
+    _seats = widget.selectedSeats;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -16,7 +45,7 @@ class _TicketScreenState extends State<TicketScreen> {
         iconTheme: const IconThemeData(color: Colors.white,),
         backgroundColor: const Color.fromRGBO(43, 43, 56, 1),
         title: const Text(
-          'Ticket',
+          'Ticket Detail',
           style: TextStyle(
             fontSize: 20,
             fontWeight: FontWeight.bold,
@@ -39,7 +68,7 @@ class _TicketScreenState extends State<TicketScreen> {
                     borderRadius: BorderRadius.all(Radius.circular(15)),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(15),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -51,63 +80,48 @@ class _TicketScreenState extends State<TicketScreen> {
                               child: Container(
                                 width: 100,
                                 height: 150,
-                                color: const Color.fromRGBO(247, 67, 70, 1),
+                                color: const Color.fromRGBO(43, 43, 56, 1),
+                                child: Image.network(
+                                  filterQuality: FilterQuality.high,
+                                  fit: BoxFit.cover,
+                                  '${ApiConstants.imagePath}$_poster',
+                                ),
                               ),
                             ),
-                            const SizedBox(width: 10),
-                            const Flexible(
+                            const SizedBox(width: 20),
+                            Flexible(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Judul Film',
-                                    style: TextStyle(
+                                    _title,
+                                    style: const  TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white,
                                     ),
                                   ),
-                                  SizedBox(height: 10),
-                                  Row(
-                                    children: [
-                                      Text(
-                                        'Paskal 23 CGV',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Text(
-                                        ' - ',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                      Text(
-                                        'Bandung',
-                                        style: TextStyle(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ],
+                                  const SizedBox(height: 10),
+                                  Text(
+                                    _cinemaPlace,
+                                    style: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white,
+                                    ),
                                   ),
-                                  SizedBox(height: 2),
+                                  const SizedBox(height: 2),
                                   Row(
                                     children: [
                                       Text(
-                                        '25 Nov 2024',
-                                        style: TextStyle(
+                                        DateFormat('MMMM dd, yyyy').format(_date),
+                                        style: const TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white,
                                         ),
                                       ),
-                                      Text(
+                                      const Text(
                                         ' | ',
                                         style: TextStyle(
                                           fontSize: 15,
@@ -116,8 +130,8 @@ class _TicketScreenState extends State<TicketScreen> {
                                         ),
                                       ),
                                       Text(
-                                        '10.00',
-                                        style: TextStyle(
+                                        _hour,
+                                        style: const TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.white,
@@ -126,8 +140,8 @@ class _TicketScreenState extends State<TicketScreen> {
                                     ],
                                   ),
                                   Text(
-                                    'Seat: A1, A2, A3',
-                                    style: TextStyle(
+                                    _seats.join(', '),
+                                    style: const TextStyle(
                                       fontSize: 15,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white,
@@ -145,15 +159,15 @@ class _TicketScreenState extends State<TicketScreen> {
                               height: 200,
                               width: 200,
                               child: SfBarcodeGenerator(
-                                value: '0124790124712904',
+                                value: DateTime.now().millisecondsSinceEpoch.toString(),
                                 symbology: QRCode(),
                                 barColor: Colors.white,
                               ),
                             ),
                             const SizedBox(height: 10),
-                            const Text(
-                              'Ticket Code: 0124790124712904',
-                              style: TextStyle(
+                            Text(
+                              'Kode Tiket: ${DateTime.now().millisecondsSinceEpoch.toString()}',
+                              style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,

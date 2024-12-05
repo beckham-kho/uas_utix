@@ -1,7 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:uas_utix/api_constants.dart';
 import 'package:uas_utix/models/movies_model.dart';
 import 'package:uas_utix/screens/booking_screen.dart';
+import 'package:uas_utix/services/firestore_service.dart';
 
 class MovieDetailScreen extends StatefulWidget {
   final MovieModel apiData;
@@ -12,8 +15,19 @@ class MovieDetailScreen extends StatefulWidget {
 }
 
 class _MovieDetailScreenState extends State<MovieDetailScreen> {
-  bool _expanded = false;
-  List<bool> isSelected = [true, false, false, false, false];
+  List<bool> isExpanded = [false, false];
+  List<bool> isSelected = [true, false, false, false, false, false, false];
+
+  final date = List<DateTime>.generate(7, (i) {
+    DateTime date = DateTime.now().add(Duration(days: i));
+    return date;
+  });
+  DateTime selectedDate = DateTime.now();
+  String selectedCinemaName = '';
+  String selectedHour = '';
+  int selectedPrice = 0;
+
+  final FirestoreService firestoreService = FirestoreService();
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +114,7 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     width: MediaQuery.of(context).size.width,
                     height: 60,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(5),
                       color: const Color.fromRGBO(43, 43, 56, 1),
                     ),
                     child: ListView(
@@ -111,31 +125,25 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                           selectedColor: Colors.white,
                           fillColor: const Color.fromRGBO(247, 67, 70, 1),
                           splashColor: const Color.fromRGBO(247, 67, 70, 1),
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(5),
                           isSelected: isSelected,
-                          children: const [
-                            Padding(
-                              padding: EdgeInsets.all(8),
-                              child: Text('Mon, 25 Nov'),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(8),
-                              child: Text('Tue, 26 Nov'),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(8),
-                              child: Text('Wed, 27 Nov'),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(8),
-                              child: Text('Thu, 28 Nov'),
-                            ),
-                            Padding(
-                              padding: EdgeInsets.all(8),
-                              child: Text('Fri, 29 Nov'),
-                            ),
-                          ],
+                          children: List.generate(date.length, (int i) {
+                            return Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: Column(
+                                children: [
+                                  Text(
+                                    '${DateFormat('EEE').format(date[i])},',
+                                  ),
+                                  Text(
+                                    DateFormat('MMMM dd').format(date[i]),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }),
                           onPressed: (int newIndex) {
+                            selectedDate = date[newIndex];
                             setState(() {
                               for (int i=0; i<isSelected.length; i++) {
                                 if(i == newIndex) {
@@ -151,106 +159,140 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  ExpansionPanelList(
-                    expandIconColor: Colors.white,
-                    animationDuration: const Duration(milliseconds: 300),
-                    children: [
-                      ExpansionPanel(
-                        backgroundColor: const Color.fromRGBO(43, 43, 56, 1),
-                        headerBuilder: (context, isExpanded) {
-                          return const ListTile(
-                            title: Text(
-                              'Paskal 23 CGV',
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Colors.white,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          );
-                        },
-                        body: Padding(
-                          padding: const EdgeInsets.only(right: 15, left: 15),
-                          child: Column(
-                            children: [
-                              const Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Reguler 2D',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white
-                                    ),
-                                  ),
-                                  Text(
-                                    'Rp. 40.000',
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.white
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 10),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Expanded(
-                                    child: TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(builder: (context) => const BookingScreen())
-                                        );
-                                      },
-                                      style: TextButton.styleFrom(
-                                        backgroundColor: const Color.fromRGBO(247, 67, 70, 1),
+                  StreamBuilder<QuerySnapshot>(
+                    stream: firestoreService.getCinema(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasData) {
+                        List cinemaList = snapshot.data!.docs;
+
+                        return ExpansionPanelList(
+                          expandIconColor: Colors.white,
+                          animationDuration: const Duration(milliseconds: 300),
+                          children: [
+                            for (int i = 0; i < cinemaList.length; i++)
+                              ExpansionPanel(
+                                backgroundColor: const Color.fromRGBO(43, 43, 56, 1),
+                                headerBuilder: (context, isExpanded) {
+                                  return ListTile(
+                                    title: Text(
+                                      cinemaList[i]['place_name'],
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w500,
                                       ),
-                                      child: const Text(
-                                        '10.00',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      )
                                     ),
-                                  ),
-                                  const SizedBox(width: 10),
-                                  Expanded(
-                                    child: TextButton(
-                                      onPressed: () {
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(builder: (context) => const BookingScreen())
-                                        );
-                                      },
-                                      style: TextButton.styleFrom(
-                                        backgroundColor: const Color.fromRGBO(247, 67, 70, 1),
+                                  );
+                                },
+                                body: Padding(
+                                  padding: const EdgeInsets.only(right: 15, left: 15),
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment: CrossAxisAlignment.center,
+                                        children: [
+                                          const Text(
+                                            'Reguler 2D',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                          Text(
+                                            'Rp ${cinemaList[i]['price'].toString()}',
+                                            style: const TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.w500,
+                                              color: Colors.white,
+                                            ),
+                                          ),
+                                        ],
                                       ),
-                                      child: const Text(
-                                        '10.00',
-                                        style: TextStyle(
-                                          color: Colors.white,
-                                        ),
-                                      )
-                                    ),
+                                      const SizedBox(height: 10),
+                                      Column(
+                                        children: [
+                                          for (int j = 0; j < (cinemaList[i]['hour'].length/2).ceil(); j++)
+                                            Padding(
+                                              padding: const EdgeInsets.symmetric(vertical: 5),
+                                              child: Row(
+                                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                children: [
+                                                  if (j < (cinemaList[i]['hour'].length/2).ceil())
+                                                    Expanded(
+                                                      child: TextButton(
+                                                        onPressed: () {
+                                                          selectedCinemaName = cinemaList[i]['place_name'];
+                                                          selectedHour = cinemaList[i]['hour'][j];
+                                                          selectedPrice = cinemaList[i]['price'];
+                                                          Navigator.of(context).push(
+                                                            MaterialPageRoute(
+                                                              builder: (context) => BookingScreen(widget.apiData.title, widget.apiData.posterPath, selectedDate, selectedCinemaName, selectedHour, selectedPrice),
+                                                            ),
+                                                          );
+                                                        },
+                                                        style: TextButton.styleFrom(
+                                                          backgroundColor:
+                                                              const Color.fromRGBO(247, 67, 70, 1),
+                                                        ),
+                                                        child: Text(
+                                                          cinemaList[i]['hour'][j],
+                                                          style: const TextStyle(
+                                                            color: Colors.white,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  const SizedBox(width: 10),
+                                                  if (j + (cinemaList[i]['hour'].length/2).ceil() < cinemaList[i]['hour'].length)
+                                                    Expanded(
+                                                      child: TextButton(
+                                                        onPressed: () {
+                                                          selectedCinemaName = cinemaList[i]['place_name'];
+                                                          selectedHour = cinemaList[i]['hour'][j];
+                                                          selectedPrice = cinemaList[i]['price'];
+                                                          Navigator.of(context).push(
+                                                            MaterialPageRoute(
+                                                              builder: (context) => BookingScreen(widget.apiData.title, widget.apiData.posterPath, selectedDate, selectedCinemaName, selectedHour, selectedPrice),
+                                                            ),
+                                                          );
+                                                        },
+                                                        style: TextButton.styleFrom(
+                                                          backgroundColor:
+                                                              const Color.fromRGBO(247, 67, 70, 1),
+                                                        ),
+                                                        child: Text(
+                                                          cinemaList[i]['hour'][j + (cinemaList[i]['hour'].length/2).ceil()],
+                                                          style: const TextStyle(
+                                                            color: Colors.white,
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                ],
+                                              ),
+                                            ),
+                                        ],
+                                      ),
+                                      const SizedBox(height: 10),
+                                    ],
                                   ),
-                                ],
+                                ),
+                                isExpanded: isExpanded[i],
+                                canTapOnHeader: true,
                               ),
-                              const SizedBox(height: 10),
-                            ],
-                          ),
-                        ),
-                        isExpanded: _expanded,
-                        canTapOnHeader: true,
-                      ),
-                    ],
-                    dividerColor: Colors.grey,
-                    expansionCallback: (panelIndex, isExpanded) {
-                      _expanded = !_expanded;
-                      setState(() {});
+                          ],
+                          dividerColor: Colors.grey,
+                          expansionCallback: (index, isExpand) {
+                            setState(() {
+                              isExpanded[index] = !isExpanded[index];
+                            });
+                          },
+                        );
+                      } else {
+                        return const Text('Cinema data not found');
+                      }
                     },
                   ),
                 ],
@@ -262,3 +304,6 @@ class _MovieDetailScreenState extends State<MovieDetailScreen> {
     );
   }
 }
+
+
+

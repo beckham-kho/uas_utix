@@ -22,12 +22,12 @@ class MovieModel {
     });
 
     factory MovieModel.fromJson(Map<String, dynamic> json) => MovieModel(
-        backdropPath: json["backdrop_path"],
+        backdropPath: json["backdrop_path"] ?? "",
         id: json["id"],
         title: json["title"],
         originalTitle: json["original_title"],
         overview: json["overview"],
-        posterPath: json["poster_path"],
+        posterPath: json["poster_path"] ?? "",
         releaseDate: DateTime.parse(json["release_date"]),
         voteAverage: json["vote_average"]?.toDouble(),
         genreIds: List<int>.from(json["genre_ids"].map((x) => x)),

@@ -5,20 +5,43 @@ import 'package:uas_utix/screens/login_screen.dart';
 import 'package:uas_utix/screens/ticket_screen.dart';
 
 class PaymentSplashScreen extends StatefulWidget {
-  const PaymentSplashScreen({super.key});
+  final String title;
+  final String poster;
+  final DateTime selectedDate;
+  final String selectedCinemaName;
+  final String selectedHour;
+  final int selectedPrice;
+  final List<String> selectedSeats;
+  const PaymentSplashScreen(this.title, this.poster, this.selectedDate,this.selectedCinemaName,this.selectedHour, this.selectedPrice, this.selectedSeats, {super.key});
 
   @override
   State<PaymentSplashScreen> createState() => _PaymentSplashScreenState();
 }
 
 class _PaymentSplashScreenState extends State<PaymentSplashScreen> with SingleTickerProviderStateMixin {
+  dynamic _title;
+  dynamic _poster;
+  dynamic _date;
+  dynamic _cinemaPlace;
+  dynamic _hour;
+  dynamic _price;
+  dynamic _seats;
+
   @override
   void initState() {
     super.initState();
+    _title = widget.title;
+    _poster = widget.poster;
+    _date = widget.selectedDate;
+    _cinemaPlace = widget.selectedCinemaName;
+    _hour = widget.selectedHour;
+    _price = widget.selectedPrice;
+    _seats = widget.selectedSeats;
+
     SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
     Future.delayed(const Duration(seconds: 5), () {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const TicketScreen())
+        MaterialPageRoute(builder: (_) => TicketScreen(_title, _poster, _date, _cinemaPlace, _hour, _price, _seats))
       );
     });
   }

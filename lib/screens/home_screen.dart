@@ -62,7 +62,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         color: Colors.white,
                       ),
                       Text(
-                        'Paskal 23 - CGV - Bandung',
+                        'Bandung',
                         style: TextStyle(
                           fontSize: 20.0,
                           color: Colors.white,
@@ -151,7 +151,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     future: nowPlayingMovies,
                     builder: (context, snapshot) {
                       if(snapshot.hasError) {
-                        return Center(child: Text(snapshot.error.toString()));
+                        return Center(child: Text(snapshot.error.toString(), style: const TextStyle(color: Colors.white)));
                       } else if(snapshot.hasData) {
                         return CarouselSlider.builder(
                           itemCount: 10,
@@ -170,17 +170,31 @@ class _HomeScreenState extends State<HomeScreen> {
                                   highlightColor: Colors.transparent,
                                   focusColor: Colors.transparent,
                                   hoverColor: Colors.transparent,
-                                  child: Image.network(
-                                    filterQuality: FilterQuality.high,
-                                    fit: BoxFit.cover,
-                                    '${ApiConstants.imagePath}${snapshot.data![itemIndex].posterPath}',
+                                  child: Column(
+                                    children: [
+                                      Image.network(
+                                        filterQuality: FilterQuality.high,
+                                        fit: BoxFit.cover,
+                                        '${ApiConstants.imagePath}${snapshot.data![itemIndex].posterPath}',
+                                      ),
+                                      const SizedBox(height: 5),
+                                      Text(
+                                        snapshot.data![itemIndex].title,
+                                        textAlign: TextAlign.center,
+                                        style: const TextStyle(
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 )
                               ),
                             );
                           },
                           options: CarouselOptions(
-                            height: 300,
+                            height: 500,
                             autoPlay: true,
                             viewportFraction: 0.55,
                             autoPlayCurve: Curves.fastOutSlowIn,
@@ -196,19 +210,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     }
                   )
                 ),
-                const SizedBox(height: 20,),
-                const Center(
-                  child: Text(
-                    'Judul Film',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 20,),
                 const Text(
                   'Special Offer Just for You!',
                   style: TextStyle(

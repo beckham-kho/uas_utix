@@ -5,6 +5,7 @@ class AuthProvider extends ChangeNotifier {
   User? _user;
   User? get user => _user;
   bool get isLoggedIn => _user != null;
+  String? get email => _user?.email;
 
   Future<void> login({required String email, required String password}) async {
     try {

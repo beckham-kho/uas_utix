@@ -1,23 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:uas_utix/screens/ticket_payment_screen.dart';
 import 'package:uas_utix/widgets/seat_selector.dart';
 
 class BookingScreen extends StatefulWidget {
-  const BookingScreen({super.key});
+  final String title;
+  final String poster;
+  final DateTime selectedDate;
+  final String selectedCinemaName;
+  final String selectedHour;
+  final int selectedPrice;
+
+  const BookingScreen(this.title, this.poster, this.selectedDate,this.selectedCinemaName,this.selectedHour, this.selectedPrice, {super.key});
 
   @override
   State<BookingScreen> createState() => _BookingScreenState();
 }
 
 class _BookingScreenState extends State<BookingScreen> {
-    var seatStatus = [
-      [1, 1, 1, 0, 1, 1, 1],
-      [1, 1, 1, 0, 1, 1, 1],  
-      [1, 1, 1, 0, 1, 1, 1],
-      [1, 1, 1, 0, 1, 1, 1],
-      [1, 1, 1, 0, 1, 1, 1],  
-      [1, 1, 1, 0, 1, 1, 1],
-    ];
+  dynamic _title;
+  dynamic _poster;
+  dynamic _date;
+  dynamic _cinemaPlace;
+  dynamic _hour;
+  dynamic _price;
+  List<String> selectedSeats = [];
+  int totalPrice = 0;
+  
+  var seatStatus = [
+    [1, 1, 1, 0, 1, 1, 1],
+    [1, 1, 1, 0, 1, 1, 1],  
+    [1, 1, 1, 0, 1, 1, 1],
+    [1, 1, 1, 0, 1, 1, 1],
+    [1, 1, 1, 0, 1, 1, 1],  
+    [1, 1, 1, 0, 1, 1, 1],
+  ];
+
+
+  @override
+  void initState() {
+    super.initState();
+    _title = widget.title;
+    _poster = widget.poster;
+    _date = widget.selectedDate;
+    _cinemaPlace = widget.selectedCinemaName;
+    _hour = widget.selectedHour;
+    _price = widget.selectedPrice;
+  }
+
   Widget _seat() {
     return Column(
       children: [
@@ -34,18 +64,21 @@ class _BookingScreenState extends State<BookingScreen> {
                 GestureDetector(
                   onTap: () {
                     setState(() {
+                      String seatNumber = '${String.fromCharCode(65 + i)}$j';
                       if (seatStatus[i][j - 1] == 1) {
                         seatStatus[i][j - 1] = 2;
+                        selectedSeats.add(seatNumber);
                       } else if (seatStatus[i][j - 1] == 2) {
                         seatStatus[i][j - 1] = 1;
+                        selectedSeats.remove(seatNumber);
                       }
+                      totalPrice =  (selectedSeats.length * _price).toInt();
                     });
                   },
                   child: Container(
                     height: 30,
                     margin: const EdgeInsets.all(5),
-                    child: 
-                    seatStatus[i][j - 1] == 1 ? BuildSeats.availableSeat() 
+                    child: seatStatus[i][j - 1] == 1 ? BuildSeats.availableSeat() 
                     : seatStatus[i][j - 1] == 2 ? BuildSeats.selectedSeat() 
                     : BuildSeats.reservedSeat()
                   ),
@@ -62,7 +95,7 @@ class _BookingScreenState extends State<BookingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.white,),
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: const Color.fromRGBO(43, 43, 56, 1),
         title: const Text(
           'Book Ticket',
@@ -78,32 +111,32 @@ class _BookingScreenState extends State<BookingScreen> {
         direction: Axis.vertical,
         children: [
           const SizedBox(height: 10),
-          const Padding(
-            padding: EdgeInsets.all(10),
+          Padding(
+            padding: const EdgeInsets.all(10),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Ticket Data Detail',
+                const Text(
+                  'Cinema Detail',
                   style: TextStyle(
                     fontSize: 25,
                     fontWeight: FontWeight.bold,
                     color: Colors.white,
                   ),
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
                 Row(
                   children: [
                     Text(
-                      'Paskal 23 CGV',
-                      style: TextStyle(
+                      _cinemaPlace,
+                      style: const TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
                     ),
-                    Text(
+                    const Text(
                       ' - ',
                       style: TextStyle(
                         fontSize: 25,
@@ -111,7 +144,7 @@ class _BookingScreenState extends State<BookingScreen> {
                         color: Colors.white,
                       ),
                     ),
-                    Text(
+                    const Text(
                       'Bandung',
                       style: TextStyle(
                         fontSize: 25,
@@ -124,14 +157,14 @@ class _BookingScreenState extends State<BookingScreen> {
                 Row(
                   children: [
                     Text(
-                      '25 Nov 2024',
-                      style: TextStyle(
+                      DateFormat('MMMM dd, yyyy').format(_date),
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       ),
                     ),
-                    Text(
+                    const Text(
                       ' | ',
                       style: TextStyle(
                         fontSize: 20,
@@ -140,8 +173,8 @@ class _BookingScreenState extends State<BookingScreen> {
                       ),
                     ),
                     Text(
-                      '10.00',
-                      style: TextStyle(
+                      _hour,
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
@@ -292,12 +325,12 @@ class _BookingScreenState extends State<BookingScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                const Padding(
-                  padding: EdgeInsets.all(5),
+                Padding(
+                  padding: const EdgeInsets.all(5),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         'Seat',
                         textAlign: TextAlign.center,
                         style: TextStyle(
@@ -306,14 +339,13 @@ class _BookingScreenState extends State<BookingScreen> {
                           color: Colors.white,
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Text(
-                        'A1, A2, A3',
+                        selectedSeats.isEmpty ? '-' : selectedSeats.join(", "),
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey,
+                          color: Colors.white,
                         ),
                       ),
                     ],
@@ -324,12 +356,12 @@ class _BookingScreenState extends State<BookingScreen> {
                   width: 3,
                   color: Colors.white,
                 ),
-                const Padding(
-                  padding: EdgeInsets.all(5),
+                Padding(
+                  padding: const EdgeInsets.all(5),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
+                      const Text(
                         'Total Price',
                         textAlign: TextAlign.center,
                         style: TextStyle(
@@ -338,14 +370,13 @@ class _BookingScreenState extends State<BookingScreen> {
                           color: Colors.white,
                         ),
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       Text(
-                        'Rp. 0',
+                        selectedSeats.isEmpty ? 'Rp 0' : totalPrice.toString(),
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: const TextStyle(
                           fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey,
+                          color: Colors.white,
                         ),
                       ),
                     ],
@@ -361,7 +392,7 @@ class _BookingScreenState extends State<BookingScreen> {
             child: TextButton(
               onPressed: () {
                 Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const TicketPaymentScreen())
+                  MaterialPageRoute(builder: (context) => TicketPaymentScreen(_title, _poster, _date, _cinemaPlace, _hour, _price, selectedSeats, totalPrice))
                 );
               },
               child: const Text(
@@ -380,7 +411,3 @@ class _BookingScreenState extends State<BookingScreen> {
     );
   }
 }
-
-
-
-
