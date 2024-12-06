@@ -159,7 +159,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                'Rp ${entry.key}',
+                                                '${entry.key}',
                                                 style: const TextStyle(
                                                   fontSize: 17,
                                                   color: Colors.white,
@@ -171,7 +171,7 @@ class _HistoryScreenState extends State<HistoryScreen> {
                                         ],
                                       ),
                                       Text(
-                                        getFnbTransactionList[index]['totalPayment'].toString(),
+                                        'Rp ${getFnbTransactionList[index]['totalPayment'].toString()}',
                                         style: const TextStyle(
                                           fontSize: 20,
                                           color: Colors.white,

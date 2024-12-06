@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:provider/provider.dart';
@@ -9,6 +10,8 @@ import 'package:uas_utix/providers/auth_provider.dart';
 import 'package:uas_utix/screens/fnb_screen.dart';
 import 'package:uas_utix/screens/movie_detail_screen.dart';
 import 'package:uas_utix/screens/navigation.dart';
+import 'package:uas_utix/screens/profile_screen.dart';
+import 'package:uas_utix/services/firestore_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,6 +21,7 @@ class HomeScreen extends StatefulWidget {
   }
 class _HomeScreenState extends State<HomeScreen> {
   late Future<List<MovieModel>> nowPlayingMovies;
+  final FirestoreService firestoreService = FirestoreService();
 
   @override
   void initState() {
@@ -34,7 +38,11 @@ class _HomeScreenState extends State<HomeScreen> {
         title: Image.asset('img/logo_utix.png', width: 75),
         actions: <Widget>[
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => const ProfileScreen())
+              );
+            },
             icon: const Icon(
               Icons.person,
               color: Colors.white,
@@ -78,6 +86,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   'Now Playing',
                   style: TextStyle(
                     fontSize: 25.0,
+                    fontWeight: FontWeight.bold,
                     color: Colors.white
                   ),
                 ),
@@ -150,29 +159,46 @@ class _HomeScreenState extends State<HomeScreen> {
                   'Special Offer Just for You!',
                   style: TextStyle(
                     fontSize: 22.0,
+                    fontWeight: FontWeight.bold,
                     color: Colors.white
                   ),
                 ),
                 const SizedBox(height: 10,),
-                CarouselSlider.builder(
-                  itemCount: 3, 
-                  itemBuilder: (context, itemIndex, pageViewIndex) {
-                    return Padding(
-                      padding: const EdgeInsets.all(5),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
-                        child: Container(
-                          width: MediaQuery.of(context).size.width,
-                          color: const Color.fromRGBO(43, 43, 56, 1),
+                StreamBuilder<QuerySnapshot>(
+                  stream: firestoreService.getPromo(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasData) {
+                      List promoList = snapshot.data!.docs;
+
+                      return CarouselSlider.builder(
+                        itemCount: 3, 
+                        itemBuilder: (context, itemIndex, pageViewIndex) {
+                          return Padding(
+                            padding: const EdgeInsets.all(5),
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(10),
+                              child: Container(
+                                width: MediaQuery.of(context).size.width,
+                                color: const Color.fromRGBO(43, 43, 56, 1),
+                                child: Image.asset(
+                                  filterQuality: FilterQuality.high,
+                                  fit: BoxFit.cover,
+                                  promoList[itemIndex]['image'],
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                        options: CarouselOptions(
+                          height: 200,
+                          viewportFraction: 0.8,
+                          pageSnapping: true,
                         ),
-                      ),
-                    );
+                      );
+                    } else {
+                      return const Text('Promo data not found');
+                    }
                   },
-                  options: CarouselOptions(
-                    height: 150,
-                    viewportFraction: 0.8,
-                    pageSnapping: true,
-                  ),
                 ),
               ],
             ),

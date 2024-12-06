@@ -6,6 +6,7 @@ class FirestoreService {
   final CollectionReference ticketTransaction = FirebaseFirestore.instance.collection('ticket_transaction');
   final CollectionReference fnb = FirebaseFirestore.instance.collection('fnb');
   final CollectionReference fnbTransaction = FirebaseFirestore.instance.collection('fnb_transaction');
+  final CollectionReference promo = FirebaseFirestore.instance.collection('promo');
   final FirebaseAuth auth = FirebaseAuth.instance;
 
   Stream<QuerySnapshot> getCinema() {
@@ -52,5 +53,10 @@ class FirestoreService {
   Stream<QuerySnapshot> getFnbTransaction() {
     final fnbTransactionStream = fnbTransaction.snapshots();
     return fnbTransactionStream;
+  }
+
+  Stream<QuerySnapshot> getPromo() {
+    final promoStream = promo.snapshots();
+    return promoStream;
   }
 }
