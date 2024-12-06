@@ -34,7 +34,7 @@ class _TicketPaymentScreenState extends State<TicketPaymentScreen> {
   int totalPayment = 0;
   List<String> paymentMethod = ['QRIS', 'Transfer Bank', 'Dana', 'Gopay', 'OVO'];
   List<bool> isSelected = [true, false, false, false, false];
-  String selectedPaymentMethod = '';
+  String selectedPaymentMethod = 'QRIS';
 
   @override
   void initState() {
@@ -108,22 +108,6 @@ class _TicketPaymentScreenState extends State<TicketPaymentScreen> {
                               Text(
                                 _cinemaPlace,
                                 style: const  TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              const Text(
-                                ' - ',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white,
-                                ),
-                              ),
-                              const Text(
-                                'Bandung',
-                                style: TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.white,

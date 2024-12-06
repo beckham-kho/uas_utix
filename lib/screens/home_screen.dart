@@ -6,7 +6,9 @@ import 'package:uas_utix/api_constants.dart';
 import 'package:uas_utix/models/movie_genre.dart';
 import 'package:uas_utix/models/movies_model.dart';
 import 'package:uas_utix/providers/auth_provider.dart';
+import 'package:uas_utix/screens/fnb_screen.dart';
 import 'package:uas_utix/screens/movie_detail_screen.dart';
+import 'package:uas_utix/screens/navigation.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -70,73 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ],
                   ),
-                ),
-                const SizedBox(height: 5,),
-                Row(
-                  children: <Widget>[
-                    Column(
-                      children: [
-                        InkWell(
-                          onTap: () {
-
-                          },
-                          splashColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          focusColor: Colors.transparent,
-                          hoverColor: Colors.transparent,
-                          child: Image.asset('img/menu_movies.png', width: 75,),
-                        ),
-                        const Text(
-                          'Movies',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.white
-                          ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(width: 20,),
-                    Column(
-                      children: [
-                        InkWell(
-                          onTap: () {},
-                          splashColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          focusColor: Colors.transparent,
-                          hoverColor: Colors.transparent,
-                          child: Image.asset('img/menu_fnb.png', width: 75,),
-                        ),
-                        const Text(
-                          'FnB',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.white
-                          ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(width: 20,),
-                    Column(
-                      children: [
-                        InkWell (
-                          onTap: () {},
-                          splashColor: Colors.transparent,
-                          highlightColor: Colors.transparent,
-                          focusColor: Colors.transparent,
-                          hoverColor: Colors.transparent,
-                          child: Image.asset('img/menu_promo.png', width: 75,),
-                        ),
-                        const Text(
-                          'Promo',
-                          style: TextStyle(
-                            fontSize: 15,
-                            color: Colors.white
-                          ),
-                        )
-                      ],
-                    ),
-                  ],
-                ),
+                ), 
                 const SizedBox(height: 20,),
                 const Text(
                   'Now Playing',

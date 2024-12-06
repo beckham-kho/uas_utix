@@ -44,6 +44,7 @@ dependencies:
   provider: ^6.1.2
   fluttertoast: ^8.2.8
   intl: ^0.20.1
+  customizable_counter: ^1.0.4
 
 dev_dependencies:
   flutter_test:

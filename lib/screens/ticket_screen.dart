@@ -166,7 +166,7 @@ class _TicketScreenState extends State<TicketScreen> {
                             ),
                             const SizedBox(height: 10),
                             Text(
-                              'Kode Tiket: ${DateTime.now().millisecondsSinceEpoch.toString()}',
+                              'Ticket Code: ${DateTime.now().millisecondsSinceEpoch.toString()}',
                               style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold,

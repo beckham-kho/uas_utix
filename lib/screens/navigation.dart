@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:uas_utix/screens/fnb_screen.dart';
+import 'package:uas_utix/screens/history_screen.dart';
 import 'package:uas_utix/screens/home_screen.dart';
 
 class Navigation extends StatefulWidget {
@@ -21,6 +23,8 @@ class _NavigationState extends State<Navigation> {
   static const List<Widget> _widgetOptions = <Widget>[
     //tambahin beberapa screen kalo udah jadi
     HomeScreen(),
+    FnbScreen(),
+    HistoryScreen(),
   ];
 
   void _onItemTapped(int index) {
