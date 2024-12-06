@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:uas_utix/screens/fnb_payment_splash_screen.dart';
 import 'package:uas_utix/services/firestore_service.dart';

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:uas_utix/api_constants.dart';
-import 'package:uas_utix/providers/auth_provider.dart';
 import 'package:uas_utix/screens/payment_splash_screen.dart';
 import 'package:uas_utix/services/firestore_service.dart';
 

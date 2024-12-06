@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:uas_utix/screens/fnb_order_screen.dart';
-import 'package:uas_utix/screens/home_screen.dart';
-import 'package:uas_utix/screens/login_screen.dart';
-import 'package:uas_utix/screens/ticket_screen.dart';
 
 class FnbPaymentSplashScreen extends StatefulWidget {
   final Map<String, dynamic> items;

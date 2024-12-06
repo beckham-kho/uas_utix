@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:uas_utix/screens/home_screen.dart';
 import 'package:uas_utix/screens/login_screen.dart';
 import 'package:uas_utix/screens/navigation.dart';
 import 'package:uas_utix/services/register_service.dart';

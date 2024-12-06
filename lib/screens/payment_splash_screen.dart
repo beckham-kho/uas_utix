@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:uas_utix/screens/home_screen.dart';
-import 'package:uas_utix/screens/login_screen.dart';
 import 'package:uas_utix/screens/ticket_screen.dart';
 
 class PaymentSplashScreen extends StatefulWidget {

@@ -24,11 +24,6 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   }
 
   @override
-  void dispose() {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual, overlays: SystemUiOverlay.values);
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(

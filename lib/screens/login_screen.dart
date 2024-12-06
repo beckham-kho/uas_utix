@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:uas_utix/providers/auth_provider.dart';
-import 'package:uas_utix/screens/home_screen.dart';
 import 'package:uas_utix/screens/navigation.dart';
 import 'package:uas_utix/screens/register_screen.dart';
 

@@ -23,7 +23,6 @@ class _TicketScreenState extends State<TicketScreen> {
   dynamic _date;
   dynamic _cinemaPlace;
   dynamic _hour;
-  dynamic _price;
   dynamic _seats;
 
     @override
@@ -34,7 +33,6 @@ class _TicketScreenState extends State<TicketScreen> {
     _date = widget.selectedDate;
     _cinemaPlace = widget.selectedCinemaName;
     _hour = widget.selectedHour;
-    _price = widget.selectedPrice;
     _seats = widget.selectedSeats;
   }
 

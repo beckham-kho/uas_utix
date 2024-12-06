@@ -1,15 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:provider/provider.dart';
 import 'package:uas_utix/api/api.dart';
 import 'package:uas_utix/api_constants.dart';
-import 'package:uas_utix/models/movie_genre.dart';
 import 'package:uas_utix/models/movies_model.dart';
-import 'package:uas_utix/providers/auth_provider.dart';
-import 'package:uas_utix/screens/fnb_screen.dart';
 import 'package:uas_utix/screens/movie_detail_screen.dart';
-import 'package:uas_utix/screens/navigation.dart';
 import 'package:uas_utix/screens/profile_screen.dart';
 import 'package:uas_utix/services/firestore_service.dart';
 
